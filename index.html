@@ -1,0 +1,352 @@
+<!--STL File rendering-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8" />-->
+<!--  <title>Model Viewer</title>-->
+<!--  <style>body { margin: 0; overflow: hidden; }</style>-->
+
+<!--  &lt;!&ndash; Import map for Three.js modules &ndash;&gt;-->
+<!--  <script type="importmap">-->
+<!--  {-->
+<!--    "imports": {-->
+<!--      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",-->
+<!--      "STLLoader": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/STLLoader.js",-->
+<!--      "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js"-->
+<!--    }-->
+<!--  }-->
+<!--  </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <script type="module">-->
+<!--    import * as THREE from "three";-->
+<!--    import { STLLoader } from "STLLoader";-->
+<!--    import { OrbitControls } from "OrbitControls";-->
+
+<!--    // Scene, camera, renderer-->
+<!--    const scene = new THREE.Scene();-->
+<!--    scene.background = new THREE.Color(0xf0f0f0);-->
+
+<!--    const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);-->
+<!--    camera.position.set(3, 3, 3);-->
+
+<!--    const renderer = new THREE.WebGLRenderer({ antialias: true });-->
+<!--    renderer.setSize(window.innerWidth, window.innerHeight);-->
+<!--    document.body.appendChild(renderer.domElement);-->
+
+<!--    // Controls-->
+<!--    const controls = new OrbitControls(camera, renderer.domElement);-->
+<!--    controls.enableDamping = true;-->
+
+<!--    // Lights-->
+<!--    scene.add(new THREE.AmbientLight(0x404040));-->
+<!--    const dir = new THREE.DirectionalLight(0xffffff, 1);-->
+<!--    dir.position.set(5, 5, 5);-->
+<!--    scene.add(dir);-->
+
+<!--    // Grid helper for context-->
+<!--    scene.add(new THREE.GridHelper(10, 20));-->
+
+<!--    // Load and render the STL-->
+<!--    const loader = new STLLoader();-->
+<!--    loader.load(-->
+<!--      'cube.stl',-->
+<!--      geometry => {-->
+<!--        geometry.computeBoundingBox();-->
+<!--        geometry.center();-->
+
+<!--        const material = new THREE.MeshPhongMaterial({ color: 0x0077be, specular: 0x555555, shininess: 30 });-->
+<!--        const mesh = new THREE.Mesh(geometry, material);-->
+<!--        scene.add(mesh);-->
+
+<!--        // Adjust camera based on model size-->
+<!--        const size = geometry.boundingBox.getSize(new THREE.Vector3()).length();-->
+<!--        const distance = size * 2;-->
+<!--        camera.position.set(distance, distance, distance);-->
+<!--        controls.update();-->
+
+<!--        animate();-->
+<!--      },-->
+<!--      xhr => console.log(`STL download: ${(xhr.loaded/xhr.total*100).toFixed(1)}%`),-->
+<!--      err => console.error('Error loading STL:', err)-->
+<!--    );-->
+
+<!--    // Render loop-->
+<!--    function animate() {-->
+<!--      requestAnimationFrame(animate);-->
+<!--      controls.update();-->
+<!--      renderer.render(scene, camera);-->
+<!--    }-->
+
+<!--    // Handle resizing-->
+<!--    window.addEventListener('resize', () => {-->
+<!--      camera.aspect = window.innerWidth / window.innerHeight;-->
+<!--      camera.updateProjectionMatrix();-->
+<!--      renderer.setSize(window.innerWidth, window.innerHeight);-->
+<!--    });-->
+<!--  </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!--FBX File Rendering-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8" />-->
+<!--  <title>FBX Viewer</title>-->
+<!--  <style>-->
+<!--    body { margin: 0; overflow: hidden; }-->
+<!--  </style>-->
+
+<!--  <script type="importmap">-->
+<!--  {-->
+<!--    "imports": {-->
+<!--      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",-->
+<!--      "FBXLoader": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/FBXLoader.js",-->
+<!--      "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js"-->
+<!--    }-->
+<!--  }-->
+<!--  </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <script type="module">-->
+<!--    import * as THREE from "three";-->
+<!--    import { FBXLoader } from "FBXLoader";-->
+<!--    import { OrbitControls } from "OrbitControls";-->
+
+<!--    const scene = new THREE.Scene();-->
+<!--    scene.background = new THREE.Color(0xeeeeee);-->
+
+<!--    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);-->
+<!--    camera.position.set(5, 5, 5);-->
+
+<!--    const renderer = new THREE.WebGLRenderer({ antialias: true });-->
+<!--    renderer.setSize(window.innerWidth, window.innerHeight);-->
+<!--    document.body.appendChild(renderer.domElement);-->
+
+<!--    const controls = new OrbitControls(camera, renderer.domElement);-->
+<!--    controls.enableDamping = true;-->
+
+<!--    // Lighting-->
+<!--    const ambientLight = new THREE.AmbientLight(0x404040);-->
+<!--    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);-->
+<!--    directionalLight.position.set(1, 1, 1);-->
+<!--    scene.add(ambientLight);-->
+<!--    scene.add(directionalLight);-->
+
+<!--    // Load FBX-->
+<!--    const loader = new FBXLoader();-->
+<!--    loader.load(-->
+<!--      'model.fbx',-->
+<!--      object => {-->
+<!--        object.scale.set(0.01, 0.01, 0.01); // adjust scale if too large-->
+<!--        scene.add(object);-->
+<!--        animate();-->
+<!--      },-->
+<!--      xhr => console.log(`Loading FBX: ${(xhr.loaded / xhr.total * 100).toFixed(1)}%`),-->
+<!--      error => console.error('Error loading FBX:', error)-->
+<!--    );-->
+
+<!--    function animate() {-->
+<!--      requestAnimationFrame(animate);-->
+<!--      controls.update();-->
+<!--      renderer.render(scene, camera);-->
+<!--    }-->
+
+<!--    window.addEventListener('resize', () => {-->
+<!--      camera.aspect = window.innerWidth / window.innerHeight;-->
+<!--      camera.updateProjectionMatrix();-->
+<!--      renderer.setSize(window.innerWidth, window.innerHeight);-->
+<!--    });-->
+<!--  </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!--Animated FBX File rendering-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Animated FBX with Mouse Wheel Control</title>-->
+<!--  <style>body { margin:0; overflow:hidden; }</style>-->
+
+<!--  <script type="importmap">-->
+<!--  {-->
+<!--    "imports": {-->
+<!--      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",-->
+<!--      "FBXLoader": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/FBXLoader.js",-->
+<!--      "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js"-->
+<!--    }-->
+<!--  }-->
+<!--  </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <script type="module">-->
+<!--    import * as THREE from "three";-->
+<!--    import { FBXLoader } from "FBXLoader";-->
+<!--    import { OrbitControls } from "OrbitControls";-->
+
+<!--    // Scene setup-->
+<!--    const scene = new THREE.Scene();-->
+<!--    scene.background = new THREE.Color(0xeeeeee);-->
+
+<!--    const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);-->
+<!--    camera.position.set(3, 3, 3);-->
+
+<!--    const renderer = new THREE.WebGLRenderer({ antialias: true });-->
+<!--    renderer.setSize(window.innerWidth, window.innerHeight);-->
+<!--    document.body.appendChild(renderer.domElement);-->
+
+<!--    const controls = new OrbitControls(camera, renderer.domElement);-->
+<!--    controls.enableDamping = true;-->
+
+<!--    // Lighting-->
+<!--    scene.add(new THREE.AmbientLight(0x404040));-->
+<!--    const dir = new THREE.DirectionalLight(0xffffff, 1);-->
+<!--    dir.position.set(5, 5, 5);-->
+<!--    scene.add(dir);-->
+
+<!--    let mixer;-->
+<!--    const clock = new THREE.Clock();-->
+<!--    const mixers = [];-->
+
+<!--    // Load animated FBX-->
+<!--    new FBXLoader().load(-->
+<!--      'model_2.fbx',-->
+<!--      object => {-->
+<!--        object.scale.set(0.02, 0.02, 0.02);-->
+<!--        scene.add(object);-->
+
+<!--        mixer = new THREE.AnimationMixer(object);-->
+<!--        mixers.push(mixer);-->
+
+<!--        const clip = object.animations[0];-->
+<!--        mixer.clipAction(clip).play();-->
+
+<!--        animate();-->
+<!--      },-->
+<!--      xhr => console.log(`FBX ${(xhr.loaded/xhr.total*100).toFixed(1)}%`),-->
+<!--      err => console.error('FBX load error:', err)-->
+<!--    );-->
+
+<!--    // Mouse wheel handler: forward/backward frame-by-frame-->
+<!--    window.addEventListener('wheel', event => {-->
+<!--      event.preventDefault();-->
+<!--      const delta = clock.getDelta();-->
+<!--      mixers.forEach(mxr => {-->
+<!--        const direction = event.deltaY > 0 ? 1 : -1;-->
+<!--        mxr.update(delta * direction);-->
+<!--      });-->
+<!--    }, { passive: false });-->
+
+<!--    // Animation loop-->
+<!--    function animate() {-->
+<!--      requestAnimationFrame(animate);-->
+<!--      controls.update();-->
+<!--      renderer.render(scene, camera);-->
+<!--    }-->
+
+<!--    // Handle resize-->
+<!--    window.addEventListener('resize', () => {-->
+<!--      camera.aspect = window.innerWidth/window.innerHeight;-->
+<!--      camera.updateProjectionMatrix();-->
+<!--      renderer.setSize(window.innerWidth, window.innerHeight);-->
+<!--    });-->
+<!--  </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GLTF Animation Viewer</title>
+  <style>body { margin: 0; overflow: hidden; }</style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "GLTFLoader": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js",
+      "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <script type="module">
+    import * as THREE from "three";
+    import { GLTFLoader } from "GLTFLoader";
+    import { OrbitControls } from "OrbitControls";
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xeeeeee);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(3, 3, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const light = new THREE.DirectionalLight(0xffffff, 0.8);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+
+    let mixer;
+    const clock = new THREE.Clock();
+
+    // Load GLTF/GLB
+    const loader = new GLTFLoader();
+    loader.load(
+      'model.glb', // or 'model.gltf'
+      gltf => {
+        const model = gltf.scene;
+        scene.add(model);
+
+        // Animation setup
+        if (gltf.animations && gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(model);
+          gltf.animations.forEach(clip => {
+            mixer.clipAction(clip).play();
+          });
+        } else {
+          console.warn("No animations in GLTF.");
+        }
+
+        animate();
+      },
+      xhr => console.log(`GLTF ${(xhr.loaded / xhr.total * 100).toFixed(1)}% loaded`),
+      err => console.error("GLTF load error:", err)
+    );
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+      if (mixer) mixer.update(delta);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
+
+
+
